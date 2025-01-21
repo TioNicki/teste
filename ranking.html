@@ -5,270 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Signal</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100vh;
-            background: black;
-            color: white;
-            text-align: center;
-            padding-top: 20px;
-        }
-
-        h1 {
-            font-size: 3rem;
-            letter-spacing: 0.2rem;
-            text-transform: uppercase;
-            color: gold;
-            border: 4px double gold;
-            border-radius: 15px;
-            padding: 10px 20px;
-            animation: flicker 1.5s infinite;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-            margin-top: 20px;
-        }
-
-        button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: gold;
-            border: none;
-            border-radius: 8px;
-            color: black;
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 10px 20px;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; height: 100vh; background: black; color: white; text-align: center; padding-top: 20px; }
+        h1 { font-size: 3rem; letter-spacing: 0.2rem; text-transform: uppercase; color: gold; border: 4px double gold; border-radius: 15px; padding: 10px 20px; animation: flicker 1.5s infinite; }
+        .ranking { margin-top: 40px; width: 80%; background: rgba(255, 255, 255, 0.1); border: 2px solid gold; border-radius: 10px; padding: 20px; }
+        .ranking h2 { font-size: 2rem; color: gold; margin-bottom: 20px; }
+        .ranking ul { list-style: none; padding: 0; width: 100%; }
+        .ranking li { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 15px; 
+            margin-bottom: 10px; 
+            background: rgba(0, 0, 0, 0.5); 
+            border: 1px solid gold; 
+            border-radius: 5px; 
+            color: white; 
+            font-size: 1.2rem; 
             cursor: pointer;
-            box-shadow: 0 0 10px cyan;
-            transition: background 0.3s, box-shadow 0.3s;
         }
-
-        button:hover {
-            background: darkgoldenrod;
-            box-shadow: 0 0 15px cyan;
-        }
-
-        button span {
-            margin-left: 10px;
-            font-size: 1.2rem;
-            display: inline-block;
-        }
-
-        .back span::before {
-            content: '\2190'; /* Unicode for left arrow */
-        }
-
-        .next span::before {
-            content: '\2192'; /* Unicode for right arrow */
-        }
-
-        .ranking {
-            margin-top: 40px;
-            width: 80%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid gold;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .ranking h2 {
-            font-size: 2rem;
-            color: gold;
-            margin-bottom: 20px;
-        }
-
-        .ranking ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .ranking li {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid gold;
-            border-radius: 5px;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .ranking li:nth-child(1) {
-            background: gold;
-            color: black;
-            font-weight: bold;
-        }
-
-        .ranking li:nth-child(2) {
-            background: silver;
-            color: black;
-            font-weight: bold;
-        }
-
-        .ranking li:nth-child(3) {
-            background: #cd7f32; /* Bronze color */
-            color: black;
-            font-weight: bold;
-        }
-
-        /* Formulário de Edição */
-        .edit-form {
-            display: none;
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid gold;
-            color: white;
-            width: 80%;
-        }
-
-        .edit-form input {
-            background: transparent;
-            border: 1px solid gold;
-            color: white;
-            margin-bottom: 10px;
-            padding: 10px;
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        .edit-form button {
-            background: gold;
-            color: black;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 10px cyan;
-        }
+        .ranking li:nth-child(1) { background: gold; color: black; font-weight: bold; }
+        .ranking li:nth-child(2) { background: silver; color: black; font-weight: bold; }
+        .ranking li:nth-child(3) { background: #cd7f32; color: black; font-weight: bold; }
+        .ranking li span.points { margin-left: 10px; text-align: right; width: 100px; }
+        .edit-form { display: none; margin-top: 20px; background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 10px; border: 2px solid gold; color: white; width: 80%; }
+        .edit-form input { background: transparent; border: 1px solid gold; color: white; margin-bottom: 10px; padding: 10px; width: 100%; font-size: 1rem; }
+        .edit-form button { background: gold; color: black; padding: 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px gold; margin-top: 10px; }
+        #addPlayerBtn { background: yellow; color: black; padding: 15px 30px; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 10px; box-shadow: 0 0 10px gold; transition: box-shadow 0.3s ease; display: none; }
+        #addPlayerBtn:hover, #addPlayerBtn:active { box-shadow: 0 0 15px yellow; }
     </style>
 </head>
 <body>
     <h1>NO-SIGNAL</h1>
-    <div class="button-container">
-        <button class="back">
-            Volte <span></span>
-        </button>
-        <button class="next">
-            Próximo <span></span>
-        </button>
-    </div>
 
     <div class="ranking">
         <h2>Ranking Geral</h2>
-        <ul>
-            <li><span>1. Jogador Ouro</span><span>1500 pts</span></li>
-            <li><span>2. Jogador Prata</span><span>1200 pts</span></li>
-            <li><span>3. Jogador Bronze</span><span>1000 pts</span></li>
-            <li><span>4. Jogador 4</span><span>800 pts</span></li>
-            <li><span>5. Jogador 5</span><span>600 pts</span></li>
-        </ul>
-        <button id="editRankingBtn">Editar Ranking</button>
+        <ul id="rankingList"></ul>
+        <button id="addPlayerBtn">Adicionar Jogador</button>
     </div>
 
-    <!-- Formulário de Edição -->
-    <div class="edit-form">
-        <h2>Editar Ranking</h2>
+    <div class="edit-form" id="editForm">
+        <h2>Adicionar ou Editar Jogador</h2>
         <input type="text" id="playerName" placeholder="Nome do Jogador">
         <input type="number" id="playerPoints" placeholder="Pontos">
         <button id="saveChanges">Salvar Alterações</button>
+        <button id="deletePlayer">Deletar Jogador</button>
     </div>
 
     <script>
-        const editRankingBtn = document.getElementById('editRankingBtn');
-        const editForm = document.querySelector('.edit-form');
-        const saveChangesBtn = document.getElementById('saveChanges');
+        const rankingList = document.getElementById('rankingList');
+        const addPlayerBtn = document.getElementById('addPlayerBtn');
+        const editForm = document.getElementById('editForm');
         const playerNameInput = document.getElementById('playerName');
         const playerPointsInput = document.getElementById('playerPoints');
-        const rankingList = document.querySelector('.ranking ul');
+        const saveChangesBtn = document.getElementById('saveChanges');
+        const deletePlayerBtn = document.getElementById('deletePlayer');
+        let currentEditItem = null;
 
-        editRankingBtn.addEventListener('click', () => {
-            editForm.style.display = 'block';
-        });
+        // Carregar os jogadores e o role do usuário do localStorage
+        let players = JSON.parse(localStorage.getItem('players')) || [];
+        const userRole = localStorage.getItem('userRole') || 'visitor';
 
-        saveChangesBtn.addEventListener('click', () => {
-            const playerName = playerNameInput.value;
-            const playerPoints = playerPointsInput.value;
-            
-            if (playerName && playerPoints) {
-                const newRankingItem = document.createElement('li');
-                newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
-                rankingList.appendChild(newRankingItem);
+        // Função para ordenar os jogadores por pontos
+        function sortPlayersByPoints() {
+            players.sort((a, b) => b.points - a.points); // Ordena do maior para o menor
+        }
 
-                // Limpar os campos do formulário
+        // Exibir a lista de jogadores ordenados
+        function displayRanking() {
+            sortPlayersByPoints(); // Ordena antes de exibir
+            rankingList.innerHTML = '';
+            players.forEach((player, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${player.name}</span>
+                    <span class="points">${player.points} pts</span>
+                `;
+                li.addEventListener('click', () => {
+                    if (userRole === 'admin') {
+                        currentEditItem = index;
+                        playerNameInput.value = player.name;
+                        playerPointsInput.value = player.points;
+                        editForm.style.display = 'block';
+                    }
+                });
+                rankingList.appendChild(li);
+            });
+        }
+
+        // Adicionar um novo jogador
+        addPlayerBtn.addEventListener('click', () => {
+            if (userRole === 'admin') {
                 playerNameInput.value = '';
                 playerPointsInput.value = '';
-
-                // Ocultar o formulário após salvar
-                editForm.style.display = 'none';
+                editForm.style.display = 'block';
+                currentEditItem = null;
             } else {
-                alert('Por favor, preencha ambos os campos!');
+                alert("Somente administradores podem adicionar jogadores.");
             }
         });
-    </script>
-    <button id="editRankingBtn" style="display:none;">Editar Ranking</button>
-    </div>
 
-    <div class="edit-form" style="display: none;">
-      <h2>Editar Ranking</h2>
-      <input type="text" id="playerName" placeholder="Nome do Jogador">
-      <input type="number" id="playerPoints" placeholder="Pontos">
-      <button id="saveChanges">Salvar Alterações</button>
-    </div>
-  </main>
+        // Salvar alterações no jogador
+        saveChangesBtn.addEventListener('click', () => {
+            const name = playerNameInput.value;
+            const points = playerPointsInput.value;
 
-  <script>
-    // Verifica se o usuário tem permissão de admin
-    window.onload = function() {
-      const userRole = localStorage.getItem('userRole');
-      
-      // Se o usuário for admin, permite editar
-      if (userRole === 'admin') {
-        document.getElementById('editRankingBtn').style.display = 'inline-block';
-      }
-    }
-
-    document.getElementById('editRankingBtn').addEventListener('click', function() {
-      document.querySelector('.edit-form').style.display = 'block';
-    });
-
-    document.getElementById('saveChanges').addEventListener('click', function() {
-      const playerName = document.getElementById('playerName').value;
-      const playerPoints = document.getElementById('playerPoints').value;
-
-      if (playerName && playerPoints) {
-        const newRankingItem = document.createElement('li');
-        newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
-        document.querySelector('.ranking ul').appendChild(newRankingItem);
-
-        // Limpar os campos do formulário
-        document.getElementById('playerName').value = '';
-        document.getElementById('playerPoints').value = '';
-
-        // Ocultar o formulário após salvar
-        document.querySelector('.edit-form').style.display = 'none';
-      } else {
-        alert('Por favor, preencha ambos os campos!');
-      }
+            if (name && points) {
+                if (currentEditItem !== null) {
+                    players[currentEditItem].name = name;
+                    players[currentEditItem].points = points;
+                } else {
+                    players.push({ name, points });
+                }
+                localStorage.setItem('players', JSON.stringify(players));
+                displayRanking();
+                editForm.style.display = 'none';
+            } else {
+                alert("Por favor, preencha todos os campos.");
+            }
         });
-      </script>
+
+        // Deletar jogador
+        deletePlayerBtn.addEventListener('click', () => {
+            if (currentEditItem !== null) {
+                players.splice(currentEditItem, 1);
+                localStorage.setItem('players', JSON.stringify(players));
+                displayRanking();
+                editForm.style.display = 'none';
+            }
+        });
+
+        // Exibir ranking
+        displayRanking();
+
+        // Exibir botão de adicionar jogador apenas para administradores
+        if (userRole === 'admin') {
+            addPlayerBtn.style.display = 'inline-block';
+        }
+    </script>
 </body>
 </html>
