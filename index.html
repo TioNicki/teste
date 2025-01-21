@@ -20,6 +20,24 @@
       </form>
     </div>
   </main>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const usuario = document.getElementById('usuario').value;
+      const senha = document.getElementById('senha').value;
+
+      // Usuário e senha de exemplo para admin
+      if (usuario === 'admin' && senha === 'admin123') {
+        // Armazenar o usuário como admin no localStorage
+        localStorage.setItem('userRole', 'admin');
+        // Redirecionar para a página de ranking
+        window.location.href = 'ranking.html'; // Ou a URL onde o ranking está
+      } else {
+        alert('Usuário ou senha inválidos!');
+      }
+    });
+  </script>
   <style>
  body {
     font-family: Helvetica, Arial, sans-serif;
