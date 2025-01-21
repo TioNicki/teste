@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Signal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            background: black;
+            color: white;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: gold;
+            border: 4px double gold;
+            border-radius: 15px;
+            padding: 10px 20px;
+            animation: flicker 1.5s infinite;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: gold;
+            border: none;
+            border-radius: 8px;
+            color: black;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            box-shadow: 0 0 10px cyan;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            background: darkgoldenrod;
+            box-shadow: 0 0 15px cyan;
+        }
+
+        button span {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+
+        .back span::before {
+            content: '\2190'; /* Unicode for left arrow */
+        }
+
+        .next span::before {
+            content: '\2192'; /* Unicode for right arrow */
+        }
+
+        .ranking {
+            margin-top: 40px;
+            width: 80%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid gold;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .ranking h2 {
+            font-size: 2rem;
+            color: gold;
+            margin-bottom: 20px;
+        }
+
+        .ranking ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ranking li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid gold;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .ranking li:nth-child(1) {
+            background: gold;
+            color: black;
+            font-weight: bold;
+        }
+
+        .ranking li:nth-child(2) {
+            background: silver;
+            color: black;
+            font-weight: bold;
+        }
+
+        .ranking li:nth-child(3) {
+            background: #cd7f32; /* Bronze color */
+            color: black;
+            font-weight: bold;
+        }
+
+        /* Formulário de Edição */
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid gold;
+            color: white;
+            width: 80%;
+        }
+
+        .edit-form input {
+            background: transparent;
+            border: 1px solid gold;
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .edit-form button {
+            background: gold;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px cyan;
+        }
+    </style>
+</head>
+<body>
+    <h1>NO-SIGNAL</h1>
+    <div class="button-container">
+        <button class="back">
+            Volte <span></span>
+        </button>
+        <button class="next">
+            Próximo <span></span>
+        </button>
+    </div>
+
+    <div class="ranking">
+        <h2>Ranking Geral</h2>
+        <ul>
+            <li><span>1. Jogador Ouro</span><span>1500 pts</span></li>
+            <li><span>2. Jogador Prata</span><span>1200 pts</span></li>
+            <li><span>3. Jogador Bronze</span><span>1000 pts</span></li>
+            <li><span>4. Jogador 4</span><span>800 pts</span></li>
+            <li><span>5. Jogador 5</span><span>600 pts</span></li>
+        </ul>
+        <button id="editRankingBtn">Editar Ranking</button>
+    </div>
+
+    <!-- Formulário de Edição -->
+    <div class="edit-form">
+        <h2>Editar Ranking</h2>
+        <input type="text" id="playerName" placeholder="Nome do Jogador">
+        <input type="number" id="playerPoints" placeholder="Pontos">
+        <button id="saveChanges">Salvar Alterações</button>
+    </div>
+
+    <script>
+        const editRankingBtn = document.getElementById('editRankingBtn');
+        const editForm = document.querySelector('.edit-form');
+        const saveChangesBtn = document.getElementById('saveChanges');
+        const playerNameInput = document.getElementById('playerName');
+        const playerPointsInput = document.getElementById('playerPoints');
+        const rankingList = document.querySelector('.ranking ul');
+
+        editRankingBtn.addEventListener('click', () => {
+            editForm.style.display = 'block';
+        });
+
+        saveChangesBtn.addEventListener('click', () => {
+            const playerName = playerNameInput.value;
+            const playerPoints = playerPointsInput.value;
+            
+            if (playerName && playerPoints) {
+                const newRankingItem = document.createElement('li');
+                newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
+                rankingList.appendChild(newRankingItem);
+
+                // Limpar os campos do formulário
+                playerNameInput.value = '';
+                playerPointsInput.value = '';
+
+                // Ocultar o formulário após salvar
+                editForm.style.display = 'none';
+            } else {
+                alert('Por favor, preencha ambos os campos!');
+            }
+        });
+    </script>
+    <script>
+        // Verifica se o usuário tem permissão de admin
+        window.onload = function() {
+          const userRole = localStorage.getItem('userRole');
+          
+          // Se o usuário for admin, permite editar
+          if (userRole === 'admin') {
+            document.getElementById('editRankingBtn').style.display = 'inline-block';
+          }
+        }
+    
+        document.getElementById('editRankingBtn').addEventListener('click', function() {
+          document.querySelector('.edit-form').style.display = 'block';
+        });
+    
+        document.getElementById('saveChanges').addEventListener('click', function() {
+          const playerName = document.getElementById('playerName').value;
+          const playerPoints = document.getElementById('playerPoints').value;
+    
+          if (playerName && playerPoints) {
+            const newRankingItem = document.createElement('li');
+            newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
+            document.querySelector('.ranking ul').appendChild(newRankingItem);
+    
+            // Limpar os campos do formulário
+            document.getElementById('playerName').value = '';
+            document.getElementById('playerPoints').value = '';
+    
+            // Ocultar o formulário após salvar
+            document.querySelector('.edit-form').style.display = 'none';
+          } else {
+            alert('Por favor, preencha ambos os campos!');
+          }
+        });
+      </script>
+</body>
+</html>
