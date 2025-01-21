@@ -224,39 +224,50 @@
             }
         });
     </script>
-    <script>
-        // Verifica se o usuário tem permissão de admin
-        window.onload = function() {
-          const userRole = localStorage.getItem('userRole');
-          
-          // Se o usuário for admin, permite editar
-          if (userRole === 'admin') {
-            document.getElementById('editRankingBtn').style.display = 'inline-block';
-          }
-        }
-    
-        document.getElementById('editRankingBtn').addEventListener('click', function() {
-          document.querySelector('.edit-form').style.display = 'block';
-        });
-    
-        document.getElementById('saveChanges').addEventListener('click', function() {
-          const playerName = document.getElementById('playerName').value;
-          const playerPoints = document.getElementById('playerPoints').value;
-    
-          if (playerName && playerPoints) {
-            const newRankingItem = document.createElement('li');
-            newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
-            document.querySelector('.ranking ul').appendChild(newRankingItem);
-    
-            // Limpar os campos do formulário
-            document.getElementById('playerName').value = '';
-            document.getElementById('playerPoints').value = '';
-    
-            // Ocultar o formulário após salvar
-            document.querySelector('.edit-form').style.display = 'none';
-          } else {
-            alert('Por favor, preencha ambos os campos!');
-          }
+    <button id="editRankingBtn" style="display:none;">Editar Ranking</button>
+    </div>
+
+    <div class="edit-form" style="display: none;">
+      <h2>Editar Ranking</h2>
+      <input type="text" id="playerName" placeholder="Nome do Jogador">
+      <input type="number" id="playerPoints" placeholder="Pontos">
+      <button id="saveChanges">Salvar Alterações</button>
+    </div>
+  </main>
+
+  <script>
+    // Verifica se o usuário tem permissão de admin
+    window.onload = function() {
+      const userRole = localStorage.getItem('userRole');
+      
+      // Se o usuário for admin, permite editar
+      if (userRole === 'admin') {
+        document.getElementById('editRankingBtn').style.display = 'inline-block';
+      }
+    }
+
+    document.getElementById('editRankingBtn').addEventListener('click', function() {
+      document.querySelector('.edit-form').style.display = 'block';
+    });
+
+    document.getElementById('saveChanges').addEventListener('click', function() {
+      const playerName = document.getElementById('playerName').value;
+      const playerPoints = document.getElementById('playerPoints').value;
+
+      if (playerName && playerPoints) {
+        const newRankingItem = document.createElement('li');
+        newRankingItem.innerHTML = `<span>${playerName}</span><span>${playerPoints} pts</span>`;
+        document.querySelector('.ranking ul').appendChild(newRankingItem);
+
+        // Limpar os campos do formulário
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerPoints').value = '';
+
+        // Ocultar o formulário após salvar
+        document.querySelector('.edit-form').style.display = 'none';
+      } else {
+        alert('Por favor, preencha ambos os campos!');
+      }
         });
       </script>
 </body>
