@@ -36,6 +36,9 @@
       } else {
         alert('Usuário ou senha inválidos!');
       }
+      document.getElementById('skipLoginBtn').addEventListener('click', function() {
+      // Redirecionar para a página de ranking sem login
+      window.location.href = 'ranking.html'; // Ou a URL onde o ranking está
     });
   </script>
   <style>
